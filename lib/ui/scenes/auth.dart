@@ -1,9 +1,9 @@
-import 'dart:ui';
-import 'package:oggetto_calendar/data/storage/tempStorage/device_info.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:oggetto_calendar/data/storage/tempStorage/device_info.dart';
 import 'package:oggetto_calendar/ui/constants/constants.dart' as constants;
-import 'package:oggetto_calendar/logic/controllers.dart' as controllers;
+import 'package:oggetto_calendar/ui/scenes/register.dart';
+
+import 'login.dart';
 
 class Auth extends StatelessWidget {
   const Auth({Key? key}) : super(key: key);
@@ -13,77 +13,58 @@ class Auth extends StatelessWidget {
     return Scaffold(
       backgroundColor: constants.AppColors.baseColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(boxShadow: [
-                BoxShadow(color: constants.AppColors.shadowColor)
-              ]),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.asset("img/Frame.png",width: DeviceInfo.screenSize.width-20,),
-                  const SizedBox(height: 10,),
-                  TextField(
-                    controller: controllers.Controllers.loginController,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: constants.AppStrings.loginHint,
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                const Text(
+                  constants.AppStrings.authLabelText,
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+                ),
+                Image.asset("img/auth.png"),
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()),)
+                  },
+                  child: const Text(
+                    constants.AppStrings.signIn,
+                    style: TextStyle(color: constants.AppColors.textColor),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: controllers.Controllers.passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: constants.AppStrings.passwordHint,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  //add function forgot pwd
-                  SizedBox(
-                    width: DeviceInfo.screenSize.width - 20,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                        child: const Text(
-                          "Forgot Password ?",
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        onTap: () => {},
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                        Size(DeviceInfo.screenSize.width - 20, 50),
                       ),
-                    ),
+                      shadowColor: MaterialStateProperty.all(Colors.transparent),
+                      backgroundColor: MaterialStateProperty.all(
+                          constants.AppColors.windowColor),
+                      side: MaterialStateProperty.all(const BorderSide(
+                          color: constants.AppColors.textColor))),
+                ),
+                const SizedBox(height: 15,),
+                ElevatedButton(
+                  onPressed: () => {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Register()),)
+                  },
+                  child: const Text(
+                    constants.AppStrings.regAccountText,
+                    style: TextStyle(color: constants.AppColors.textColor),
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  //add function sign in
-                  ElevatedButton(
-                    onPressed: () => {},
-                    child: const Text("Sign in"),
-                    style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(
-                          Size(DeviceInfo.screenSize.width - 20, 50),
-                        ),
-                        backgroundColor: MaterialStateProperty.all(
-                            constants.AppColors.textColor)),
-                  ),
-                  const SizedBox(
-                    height: 35,
-                  ),
-
-                  const SizedBox(
-                    height: 100,
-                  )
-                ],
-              ),
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                        Size(DeviceInfo.screenSize.width - 20, 50),
+                      ),
+                      shadowColor: MaterialStateProperty.all(Colors.transparent),
+                      backgroundColor: MaterialStateProperty.all(
+                          constants.AppColors.accentColor),
+                      side: MaterialStateProperty.all(const BorderSide(
+                          color: constants.AppColors.textColor))),
+                ),
+              ],
             ),
           ),
         ),
