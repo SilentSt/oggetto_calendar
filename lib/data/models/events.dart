@@ -7,8 +7,7 @@ class GetEvents {
   final String link;
   final DateTime date;
   final DateTime createdAt;
-  final GetUser eventUsers;
-  final GetUser users;
+  final List<GetUser> users;
 
   GetEvents(
       {required this.id,
@@ -17,18 +16,21 @@ class GetEvents {
       required this.link,
       required this.date,
       required this.createdAt,
-      required this.eventUsers,
       required this.users});
 
   GetEvents.fromJson(Map<String, dynamic> mappedData)
       : id = mappedData['id'],
         title = mappedData['title'],
         description = mappedData['description'],
-        link = mappedData['link'],
+        link = mappedData['chat_link']??"",
         date = DateTime.parse(mappedData['date']),
         createdAt = DateTime.parse(mappedData['created_at']),
-        eventUsers = GetUser.fromJson(mappedData['event_users']),
-        users = GetUser.fromJson(mappedData['users']);
+        users = List.generate(mappedData['users'].length,
+            (index) => GetUser.fromJson(mappedData['users'][index]));
+
+  @override
+  String toString() => title;
+
 }
 
 class PostEvents {

@@ -1,3 +1,4 @@
+import 'package:oggetto_calendar/data/models/events.dart';
 import 'package:oggetto_calendar/data/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,4 +17,7 @@ class TempData {
           Telegram(createdAt: DateTime.now(), userHash: '', telegramId: 0),
       telegramStatus: false,
       photoPath: "photoPath");
+  static List<GetEvents> curDayEvents = [];
+  static List<GetEvents> curMonthEvents = [];
+  static Map<DateTime, List<GetEvents>> selectedEvents={};
 }

@@ -27,7 +27,7 @@ class GetUser {
         id = mappedData['id'],
         roleId = mappedData['role_id'],
         role = Role.fromJson(mappedData['role']),
-        telegram = Telegram.fromJson(mappedData['telegram']),
+        telegram = Telegram.fromJson(mappedData['telegram']??{}),
         telegramStatus = mappedData['telegram_status'],
         photoPath = mappedData['photo'];
 
@@ -111,9 +111,9 @@ class Telegram {
       required this.createdAt});
 
   Telegram.fromJson(Map<String, dynamic> mappedData)
-      : telegramId = mappedData['telegram_id'],
-        userHash = mappedData['user_hash'],
-        createdAt = DateTime.parse(mappedData['created_at']);
+      : telegramId = mappedData['telegram_id']??0,
+        userHash = mappedData['user_hash']??"",
+        createdAt = DateTime.parse(mappedData['created_at']??DateTime.now().toString());
 
   Map<String, dynamic> toJson() => {
         'telegram_id': telegramId,

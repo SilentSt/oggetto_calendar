@@ -72,9 +72,14 @@ class Profile extends StatelessWidget{
         onTap: (index)async{
           switch(index){
             case 0:
+              TempData.selectedEvents.clear();
+              await Functions.getEvents(
+                  DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
+                  DateTime.utc(DateTime.now().year, DateTime.now().month, 30));
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Calendar()));
               break;
             case 1:
+              TempData.selectedEvents.clear();
               await Functions.openProfile();
               Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()));
               break;

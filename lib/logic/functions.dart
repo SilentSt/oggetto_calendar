@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:oggetto_calendar/data/api.dart';
+import 'package:oggetto_calendar/data/models/events.dart';
 import 'package:oggetto_calendar/data/models/user.dart';
 import 'package:oggetto_calendar/data/storage/deviceStorage/local_storage.dart';
 import 'package:oggetto_calendar/data/storage/tempStorage/temp_data.dart';
@@ -20,8 +21,7 @@ class Functions {
     Map<String, dynamic> respData = jsonDecode(response.values.first);
     TempData.userId = respData['user_id'].toString();
     TempData.token = respData['access_token'].toString();
-    var ls = LocalStorage();
-    ls.saveLP();
+    LocalStorage.saveLP();
     await Future.delayed(const Duration(milliseconds: 500));
     return "SUCCESS";
   }
@@ -61,6 +61,26 @@ class Functions {
         email: Controllers.profileEmailController.text);
     API.patchUser(jsonEncode(user.toJson()), TempData.me.id);
 
+    return "SUCCESS";
+  }
+
+  static Future<String> getEvents(DateTime from, DateTime to) async {
+    var res = await API.getDatedEvents(from, to);
+    List<dynamic> events = jsonDecode(utf8.decode(res.bodyBytes));
+    TempData.curMonthEvents.clear();
+    for(Map<String, dynamic>event in events)
+      {
+        TempData.curMonthEvents.add(GetEvents.fromJson(event));
+      }
+    TempData.selectedEvents.clear();
+    for(var ev in TempData.curMonthEvents)
+      {
+        if(!TempData.selectedEvents.containsKey(ev.date))
+          {
+            TempData.selectedEvents[ev.date]=[];
+          }
+        TempData.selectedEvents[ev.date]!.add(ev);
+      }
     return "SUCCESS";
   }
 }

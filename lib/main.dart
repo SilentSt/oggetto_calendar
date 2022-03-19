@@ -28,7 +28,6 @@ class InitialPage extends StatelessWidget {
 
   void tryAuth()async
   {
-    var _localStorage = LocalStorage();
-    await _localStorage.loadLP();
+    await LocalStorage.loadLP();
   }
 }
