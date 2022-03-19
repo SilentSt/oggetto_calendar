@@ -88,11 +88,6 @@ class _RegisterState extends State<Register> {
                       var resp = await Functions.registrate();
                       switch (resp) {
                         case "SUCCESS":
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Login()),
-                          );
                           controllers.Controllers.loginController.text =
                               controllers.Controllers.regEmailController.text;
                           controllers.Controllers.passwordController.text =

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oggetto_calendar/data/storage/tempStorage/device_info.dart';
+import 'package:oggetto_calendar/logic/functions.dart';
 import 'package:oggetto_calendar/ui/scenes/profile.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:oggetto_calendar/ui/constants/constants.dart' as constants;
@@ -194,12 +195,13 @@ class _CalendarState extends State<Calendar> {
           currentIndex: 0,
           showSelectedLabels: false,
           showUnselectedLabels: false,
-          onTap: (index){
+          onTap: (index)async{
             switch(index){
               case 0:
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const Calendar()));
                 break;
               case 1:
+                await Functions.openProfile();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const Profile()));
                 break;
             }
