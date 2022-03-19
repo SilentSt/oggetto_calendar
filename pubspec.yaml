@@ -39,6 +39,7 @@ dependencies:
   date_time_picker: ^2.1.0
   month_year_picker: ^0.1.0+1
   http: any
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

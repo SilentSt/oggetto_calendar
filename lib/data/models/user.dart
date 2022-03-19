@@ -45,28 +45,24 @@ class PostUser {
   final String name;
   final String phone;
   final String password;
-  final int roleId;
 
   PostUser(
       {required this.email,
       required this.name,
       required this.phone,
-      required this.password,
-      required this.roleId});
+      required this.password,});
 
   PostUser.fromJson(Map<String, dynamic> mappedData)
       : name = mappedData['name'],
         email = mappedData['email'],
         phone = mappedData['phone'],
-        password = mappedData['password'],
-        roleId = mappedData['role_id'];
+        password = mappedData['password'];
 
   Map<String, dynamic> toJson() => {
         'email': email,
         'name': name,
         'phone': phone,
         'password': password,
-        'role_id': roleId
       };
 }
 
