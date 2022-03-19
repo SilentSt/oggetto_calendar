@@ -7,4 +7,7 @@ class Controllers{
   static TextEditingController regNameController = TextEditingController();
   static TextEditingController regPhoneController = TextEditingController();
   static TextEditingController regPasswordController = TextEditingController();
+  static TextEditingController profileEmailController = TextEditingController();
+  static TextEditingController profileNameController = TextEditingController();
+  static TextEditingController profilePhoneController = TextEditingController();
 }
