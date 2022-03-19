@@ -83,4 +83,10 @@ class Functions {
       }
     return "SUCCESS";
   }
+
+  static Future<String> createEvent() async {
+
+
+    return "SUCCESS";
+  }
 }

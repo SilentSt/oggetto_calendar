@@ -7,6 +7,7 @@ import 'package:oggetto_calendar/logic/functions.dart';
 import 'package:oggetto_calendar/ui/scenes/profile.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:oggetto_calendar/ui/constants/constants.dart' as constants;
+import 'package:intl/intl.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _CalendarState extends State<Calendar> {
                                 curFormat = format;
                               });
                             },
-                            onCalendarCreated: (controller){
+                            onCalendarCreated: (controller) {
                               controller = calendarController;
                             },
                             startingDayOfWeek: StartingDayOfWeek.monday,
@@ -101,7 +102,7 @@ class _CalendarState extends State<Calendar> {
                                   color: constants.AppColors.weekendColor),
                             ),
                             eventLoader: (day) {
-                              return  _getEventsFromDay(day);
+                              return _getEventsFromDay(day);
                             },
                             onHeaderTapped: (dateTime) async {
                               showDialog(
@@ -159,7 +160,7 @@ class _CalendarState extends State<Calendar> {
                                                                   index)
                                                               .toString(),
                                                           style: const TextStyle(
-                                                              fontSize: 30,
+                                                              fontSize: 25,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -171,18 +172,125 @@ class _CalendarState extends State<Calendar> {
                                   });
                             },
                           ),
-                          ..._getEventsFromDay(focusedDay).map(
-                              (GetEvents event) => GestureDetector(
+                          ..._getEventsFromDay(focusedDay)
+                              .map((GetEvents event) => GestureDetector(
                                   onTap: () {},
                                   child: Column(
                                     children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-
-                                        ),
-                                          child:
-                                              ListTile(title: Text(event.title))),
-                                      const SizedBox(height: 5,)
+                                      Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                            decoration: const BoxDecoration(
+                                                gradient: LinearGradient(
+                                                    colors: [
+                                                  Color(0xffF6F6F6),
+                                                  Colors.white
+                                                ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment
+                                                        .bottomCenter)),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15),
+                                                  child: Container(
+                                                    width: 8,
+                                                    height: 8,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color: Colors.red),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height: 60,
+                                                    width: DeviceInfo
+                                                            .screenSize.width -
+                                                        80,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                event.title,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .left,
+                                                              ),
+                                                              Text(DateFormat(
+                                                                      'Hm')
+                                                                  .format(event
+                                                                      .date))
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            width: 70,
+                                                            height: 30,
+                                                            child: Stack(
+                                                              children: [
+                                                                Stack(
+                                                                    children: List.generate(
+                                                                        event.users.length > 3 ? 3 : event.users.length,
+                                                                        (index) => Padding(
+                                                                              padding: EdgeInsets.only(left: index.toDouble() * 10),
+                                                                              child: Image.network(event.users[index].photoPath),
+                                                                            ))),
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      left: 20),
+                                                                  child: event.users
+                                                                              .length <
+                                                                          4
+                                                                      ? const SizedBox()
+                                                                      : Container(
+                                                                          height:
+                                                                              50,
+                                                                          width:
+                                                                              50,
+                                                                          decoration: const BoxDecoration(
+                                                                              shape: BoxShape.circle,
+                                                                              color: constants.AppColors.unselectedColor),
+                                                                          child:
+                                                                              Center(
+                                                                            child:
+                                                                                Text(
+                                                                              event.users.length > 3 ? '+' + (event.users.length - 3).toString() : event.users.length.toString(),
+                                                                              style: const TextStyle(color: constants.AppColors.textColor, fontSize: 15),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )),
+                                              ],
+                                            )),
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      )
                                     ],
                                   )))
                         ],
@@ -193,11 +301,16 @@ class _CalendarState extends State<Calendar> {
           ),
         ),
       ),
-      floatingActionButton: Padding(
-          padding: const EdgeInsets.all(20),
-          child: FloatingActionButton(
-            onPressed: () {},
-          )),
+      floatingActionButton: Container(
+        width: 200,
+        height: 50,
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.black12,
+          borderRadius: BorderRadius.circular(30)
+        ),
+        child: const Center(child: Text("Добавить событие"))
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         showSelectedLabels: false,
@@ -230,8 +343,6 @@ class _CalendarState extends State<Calendar> {
 
   List<GetEvents> _getEventsFromDay(DateTime dateTime) {
     ret = [];
-    print(TempData.curMonthEvents);
-    //print(ret);
     for (var calEvent in TempData.curMonthEvents) {
       if (DateTime.utc(
               calEvent.date.year, calEvent.date.month, calEvent.date.day) ==
