@@ -1,4 +1,5 @@
 class AppStrings{
+  //app strings
   static const String emailHint = "Электронная почта";
   static const String passwordHint = "Пароль";
   static const String nameHint = "Имя";
@@ -8,4 +9,7 @@ class AppStrings{
   static const String noAccountText = "Все еще нет аккаунта?";
   static const String regAccountText = "Зарегистрироваться";
   static const String signIn = "Войти";
+
+  //api strings
+  static const String apiUri = "https://oce.shitposting.team";
 }
