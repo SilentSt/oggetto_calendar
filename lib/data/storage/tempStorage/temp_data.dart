@@ -22,4 +22,5 @@ class TempData {
   static List<int> usersAddEvent = [];
   static String displayedDate = "Дата события";
   static DateTime newEventDate = DateTime.now();
+  static String tgLink ="";
 }

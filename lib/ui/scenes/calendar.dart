@@ -67,8 +67,8 @@ class _CalendarState extends State<Calendar> {
                             },
                             onPageChanged: (DateTime date) async{
                               await Functions.getEvents(
-                                  DateTime.utc(date.year, date.month, 1),
-                                  DateTime.utc(date.year, date.month, 30));
+                                  DateTime.utc(date.year, date.month, 0),
+                                  DateTime.utc(date.year, date.month+1, 0));
                               setState(() {
                                 focusedDay = date;
                               });
@@ -444,8 +444,8 @@ class _CalendarState extends State<Calendar> {
             case 0:
               TempData.selectedEvents.clear();
               await Functions.getEvents(
-                  DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
-                  DateTime.utc(DateTime.now().year, DateTime.now().month, 30));
+                  DateTime.utc(DateTime.now().year, DateTime.now().month, 0),
+                  DateTime.utc(DateTime.now().year, DateTime.now().month+1, 0));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Calendar()));
               break;

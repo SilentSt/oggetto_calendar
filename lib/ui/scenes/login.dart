@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:oggetto_calendar/data/storage/tempStorage/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:oggetto_calendar/data/storage/tempStorage/temp_data.dart';
 import 'package:oggetto_calendar/logic/functions.dart';
 import 'package:oggetto_calendar/ui/constants/constants.dart' as constants;
 import 'package:oggetto_calendar/logic/controllers.dart' as controllers;
@@ -13,7 +14,6 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
         backgroundColor: constants.AppColors.baseColor,
@@ -29,8 +29,13 @@ class Login extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Image.asset("img/Frame.png",width: DeviceInfo.screenSize.width-20,),
-                    const SizedBox(height: 10,),
+                    Image.asset(
+                      "img/Frame.png",
+                      width: DeviceInfo.screenSize.width - 20,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextField(
                       controller: controllers.Controllers.loginController,
                       decoration: const InputDecoration(
@@ -56,12 +61,21 @@ class Login extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         var resp = await Functions.login();
-                        switch(resp){
+                        switch (resp) {
                           case "SUCCESS":
                             await Functions.getEvents(
-                                DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
-                                DateTime.utc(DateTime.now().year, DateTime.now().month, 30));
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Calendar()),);
+                                DateTime.utc(DateTime.now().year,
+                                    DateTime.now().month, 0),
+                                DateTime.utc(DateTime.now().year,
+                                    DateTime.now().month+1, 0));
+                            if (!TempData.me.telegramStatus) {
+                              Functions.getTgLink();
+                            }
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Calendar()),
+                            );
                             break;
                           default:
                             ft.Fluttertoast.showToast(msg: resp);
@@ -69,15 +83,17 @@ class Login extends StatelessWidget {
                         }
                       },
                       child: const Text(constants.AppStrings.signIn,
-                          style: TextStyle(color: constants.AppColors.textColor)),
+                          style:
+                              TextStyle(color: constants.AppColors.textColor)),
                       style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(
-                            Size(DeviceInfo.screenSize.width - 20, 50),
-                          ),
-                          backgroundColor: MaterialStateProperty.all(
-                              constants.AppColors.accentColor),
-                          side: MaterialStateProperty.all(const BorderSide(
-                              color: constants.AppColors.textColor)),),
+                        minimumSize: MaterialStateProperty.all(
+                          Size(DeviceInfo.screenSize.width - 20, 50),
+                        ),
+                        backgroundColor: MaterialStateProperty.all(
+                            constants.AppColors.accentColor),
+                        side: MaterialStateProperty.all(const BorderSide(
+                            color: constants.AppColors.textColor)),
+                      ),
                     ),
                     const SizedBox(
                       height: 100,

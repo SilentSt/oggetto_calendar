@@ -81,7 +81,11 @@ class API {
 //Users
 
 //Telegram
-  //Future<http.Response> createBotLink()
+  static Future<http.Response> createTgLink() async {
+    return http.post(Uri.parse(AppStrings.apiUri + '/telegram/link'),
+        headers: baseHeaders);
+  }
+
 //Telegram
 
 //Events

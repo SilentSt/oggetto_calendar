@@ -21,6 +21,10 @@ class Functions {
     Map<String, dynamic> respData = jsonDecode(response.values.first);
     TempData.userId = respData['user_id'].toString();
     TempData.token = respData['access_token'].toString();
+    if(respData['telegram_status']==true)
+      {
+        await Functions.getTgLink();
+      }
     LocalStorage.saveLP();
     await Future.delayed(const Duration(milliseconds: 500));
     return "SUCCESS";
@@ -111,6 +115,16 @@ class Functions {
 
     TempData.users = users;
     print(TempData.users);
+    return "SUCCESS";
+  }
+
+  static Future<String> getTgLink() async{
+    var resp = await API.createTgLink();
+    if (resp.statusCode > 299) {
+      return jsonDecode(resp.body)['detail'];
+    }
+    var data = jsonDecode(resp.body);
+    TempData.tgLink = data['link'];
     return "SUCCESS";
   }
 }
