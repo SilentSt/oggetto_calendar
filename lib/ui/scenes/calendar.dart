@@ -10,6 +10,7 @@ import 'package:oggetto_calendar/ui/scenes/profile.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:oggetto_calendar/ui/constants/constants.dart' as constants;
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Calendar extends StatefulWidget {
   const Calendar({Key? key}) : super(key: key);
@@ -65,10 +66,10 @@ class _CalendarState extends State<Calendar> {
                                 curFormat = format;
                               });
                             },
-                            onPageChanged: (DateTime date) async{
+                            onPageChanged: (DateTime date) async {
                               await Functions.getEvents(
                                   DateTime.utc(date.year, date.month, 0),
-                                  DateTime.utc(date.year, date.month+1, 0));
+                                  DateTime.utc(date.year, date.month + 1, 0));
                               setState(() {
                                 focusedDay = date;
                               });
@@ -185,6 +186,33 @@ class _CalendarState extends State<Calendar> {
                           ..._getEventsFromDay(focusedDay)
                               .map((GetEvents event) => GestureDetector(
                                   onTap: () {},
+                                  onLongPress: () {
+                                    event.link.isEmpty
+                                        ? ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    "Телеграм чат создаётся...")))
+                                        : showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    "Перейти в Телеграмм чат события?"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        launch(event.link);
+                                                      },
+                                                      child: const Text("Да")),
+                                                  TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text("Нет")),
+                                                ],
+                                              );
+                                            });
+                                  },
                                   child: Column(
                                     children: [
                                       Padding(
@@ -414,11 +442,11 @@ class _CalendarState extends State<Calendar> {
                             clearEventCreator();
                             Navigator.of(context).pop();
                             await Functions.getEvents(
-                                DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
-                                DateTime.utc(DateTime.now().year, DateTime.now().month, 30));
-                            setState(){
-
-                            }
+                                DateTime.utc(DateTime.now().year,
+                                    DateTime.now().month, 1),
+                                DateTime.utc(DateTime.now().year,
+                                    DateTime.now().month, 30));
+                            setState() {}
                           },
                           child: const Text("Ок"))
                     ],
@@ -445,7 +473,8 @@ class _CalendarState extends State<Calendar> {
               TempData.selectedEvents.clear();
               await Functions.getEvents(
                   DateTime.utc(DateTime.now().year, DateTime.now().month, 0),
-                  DateTime.utc(DateTime.now().year, DateTime.now().month+1, 0));
+                  DateTime.utc(
+                      DateTime.now().year, DateTime.now().month + 1, 0));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Calendar()));
               break;

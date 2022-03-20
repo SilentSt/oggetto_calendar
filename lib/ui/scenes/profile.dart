@@ -75,7 +75,7 @@ class Profile extends StatelessWidget {
                       if (TempData.me.telegramStatus) {
                         return;
                       }
-                      print(TempData.tgLink);
+                      //print(TempData.tgLink);
                       launch(TempData.tgLink);
                     },
                     child: Text(
