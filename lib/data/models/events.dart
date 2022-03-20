@@ -38,25 +38,29 @@ class PostEvents {
   final String description;
   final List<int> users;
   final DateTime date;
+  final bool needChat;
 
   PostEvents({
     required this.title,
     required this.description,
     required this.date,
     required this.users,
+    required this.needChat
   });
 
   PostEvents.fromJson(Map<String, dynamic> mappedData)
       : title = mappedData['title'],
         description = mappedData['description'],
         users = mappedData['users'],
-        date = DateTime.parse(mappedData['date']);
+        date = DateTime.parse(mappedData['date']),
+        needChat = mappedData['need_chat'];
 
   Map<String, dynamic> toJson() => {
     'title': title,
     'description': description,
     'date': date.toString(),
-    'users': users
+    'users': users,
+    'need_chat': needChat
   };
 }
 

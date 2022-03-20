@@ -23,4 +23,5 @@ class TempData {
   static String displayedDate = "Дата события";
   static DateTime newEventDate = DateTime.now();
   static String tgLink ="";
+  static bool needChat = false;
 }

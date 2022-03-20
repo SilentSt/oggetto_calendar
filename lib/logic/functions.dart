@@ -90,7 +90,8 @@ class Functions {
     var event = PostEvents(title: Controllers.newEventTitleController.text,
         description: Controllers.newEventDescriptionController.text,
         date: TempData.newEventDate,
-        users: TempData.usersAddEvent
+        users: TempData.usersAddEvent,
+        needChat: TempData.needChat
     );
     var resp = await API.postEvents(jsonEncode(event.toJson()));
     if (resp.statusCode > 299) {

@@ -63,6 +63,7 @@ class Login extends StatelessWidget {
                         var resp = await Functions.login();
                         switch (resp) {
                           case "SUCCESS":
+                            await Functions.openProfile();
                             await Functions.getEvents(
                                 DateTime.utc(DateTime.now().year,
                                     DateTime.now().month, 0),
