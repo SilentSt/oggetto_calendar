@@ -362,10 +362,11 @@ class _CalendarState extends State<Calendar> {
                                   children: [
                                     TextField(
                                       controller:
-                                      Controllers.newEventTitleController,
+                                          Controllers.newEventTitleController,
                                       decoration: const InputDecoration(
                                         border: OutlineInputBorder(),
-                                        hintText: constants.AppStrings.eventTitle,
+                                        hintText:
+                                            constants.AppStrings.eventTitle,
                                       ),
                                     ),
                                   ],
@@ -376,10 +377,11 @@ class _CalendarState extends State<Calendar> {
                                 TextField(
                                   maxLines: 10,
                                   controller:
-                                  Controllers.newEventDescriptionController,
+                                      Controllers.newEventDescriptionController,
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
-                                    hintText: constants.AppStrings.eventDescription,
+                                    hintText:
+                                        constants.AppStrings.eventDescription,
                                   ),
                                 ),
                                 const SizedBox(
@@ -389,12 +391,14 @@ class _CalendarState extends State<Calendar> {
                                   onTap: () async {
                                     var date = ((await showDatePicker(
                                         initialEntryMode:
-                                        DatePickerEntryMode.calendar,
-                                        initialDatePickerMode: DatePickerMode.day,
+                                            DatePickerEntryMode.calendar,
+                                        initialDatePickerMode:
+                                            DatePickerMode.day,
                                         context: context,
                                         initialDate: DateTime.now(),
                                         firstDate: DateTime.now(),
-                                        lastDate: DateTime.utc(2022, 12, 31)))!);
+                                        lastDate:
+                                            DateTime.utc(2022, 12, 31)))!);
                                     var time = await showTimePicker(
                                         context: context,
                                         initialTime: TimeOfDay.now());
@@ -435,8 +439,11 @@ class _CalendarState extends State<Calendar> {
                           TextButton(
                               onPressed: () {
                                 clearEventCreator();
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => const Calendar()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Calendar()));
                               },
                               child: const Text("Отмена")),
                           TextButton(
@@ -448,15 +455,17 @@ class _CalendarState extends State<Calendar> {
                                         DateTime.now().month, 0),
                                     DateTime.utc(DateTime.now().year,
                                         DateTime.now().month + 1, 1));
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => const Calendar()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const Calendar()));
                               },
                               child: const Text("Ок"))
                         ],
                       );
                     }),
                   ),
-
                 );
               });
         },
@@ -465,7 +474,7 @@ class _CalendarState extends State<Calendar> {
             height: 50,
             decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
-                color: Colors.black12,
+                color: Colors.black38,
                 borderRadius: BorderRadius.circular(30)),
             child: const Center(child: Text("Добавить событие"))),
       ),
