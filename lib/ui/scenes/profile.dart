@@ -105,7 +105,7 @@ class Profile extends StatelessWidget {
               TempData.selectedEvents.clear();
               await Functions.getEvents(
                   DateTime.utc(DateTime.now().year, DateTime.now().month, 0),
-                  DateTime.utc(DateTime.now().year, DateTime.now().month+1, 0));
+                  DateTime.utc(DateTime.now().year, DateTime.now().month+1, 1));
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const Calendar()));
               break;
