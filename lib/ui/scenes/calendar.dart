@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:oggetto_calendar/data/models/events.dart';
 import 'package:oggetto_calendar/data/storage/tempStorage/device_info.dart';
 import 'package:oggetto_calendar/data/storage/tempStorage/temp_data.dart';
+import 'package:oggetto_calendar/logic/controllers.dart';
 import 'package:oggetto_calendar/logic/functions.dart';
 import 'package:oggetto_calendar/ui/scenes/profile.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -61,6 +63,14 @@ class _CalendarState extends State<Calendar> {
                             onFormatChanged: (format) {
                               setState(() {
                                 curFormat = format;
+                              });
+                            },
+                            onPageChanged: (DateTime date) async{
+                              await Functions.getEvents(
+                                  DateTime.utc(date.year, date.month, 1),
+                                  DateTime.utc(date.year, date.month, 30));
+                              setState(() {
+                                focusedDay = date;
                               });
                             },
                             onCalendarCreated: (controller) {
@@ -301,15 +311,129 @@ class _CalendarState extends State<Calendar> {
           ),
         ),
       ),
-      floatingActionButton: Container(
-        width: 200,
-        height: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.black12,
-          borderRadius: BorderRadius.circular(30)
-        ),
-        child: const Center(child: Text("Добавить событие"))
+      floatingActionButton: GestureDetector(
+        onTap: () async {
+          await Functions.getUsers();
+          showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (context) {
+                return StatefulBuilder(builder: (context, setState) {
+                  return AlertDialog(
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    title: const Text("Новое событие"),
+                    contentPadding: EdgeInsets.all(20),
+                    content: SizedBox(
+                      height: 400,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Column(
+                              children: [
+                                TextField(
+                                  controller:
+                                      Controllers.newEventTitleController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    hintText: constants.AppStrings.eventTitle,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            TextField(
+                              maxLines: 10,
+                              controller:
+                                  Controllers.newEventDescriptionController,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: constants.AppStrings.eventDescription,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                var date = ((await showDatePicker(
+                                    initialEntryMode:
+                                        DatePickerEntryMode.calendar,
+                                    initialDatePickerMode: DatePickerMode.day,
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime.now(),
+                                    lastDate: DateTime.utc(2022, 12, 31)))!);
+                                var time = await showTimePicker(
+                                    context: context,
+                                    initialTime: TimeOfDay.now());
+                                TempData.newEventDate = DateTime.utc(
+                                    date.year,
+                                    date.month,
+                                    date.day,
+                                    time!.hour,
+                                    time.minute);
+                                setState(() {
+                                  TempData.displayedDate =
+                                      DateFormat("yyyy-MM-dd")
+                                          .format(TempData.newEventDate);
+                                });
+                              },
+                              child: Text(TempData.displayedDate),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            MultiSelectDialogField(
+                              items: TempData.users
+                                  .map((e) => MultiSelectItem(e.id, e.name))
+                                  .toList(),
+                              onConfirm: (List<int> values) {
+                                TempData.usersAddEvent = values;
+                              },
+                              title: const Text("Выберите участников"),
+                              searchHint: "Выберите участников",
+                              cancelText: const Text("Отменить"),
+                              searchable: true,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            clearEventCreator();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Отмена")),
+                      TextButton(
+                          onPressed: () async {
+                            await Functions.createEvent();
+                            clearEventCreator();
+                            Navigator.of(context).pop();
+                            await Functions.getEvents(
+                                DateTime.utc(DateTime.now().year, DateTime.now().month, 1),
+                                DateTime.utc(DateTime.now().year, DateTime.now().month, 30));
+                            setState(){
+
+                            }
+                          },
+                          child: const Text("Ок"))
+                    ],
+                  );
+                });
+              });
+        },
+        child: Container(
+            width: 200,
+            height: 50,
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(30)),
+            child: const Center(child: Text("Добавить событие"))),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
@@ -352,5 +476,12 @@ class _CalendarState extends State<Calendar> {
     }
     //print(ret);
     return ret;
+  }
+
+  void clearEventCreator() {
+    TempData.displayedDate = "Дата события";
+    Controllers.newEventTitleController.clear();
+    Controllers.newEventDescriptionController.clear();
+    TempData.usersAddEvent.clear();
   }
 }

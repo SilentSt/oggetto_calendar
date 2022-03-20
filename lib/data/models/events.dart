@@ -36,21 +36,28 @@ class GetEvents {
 class PostEvents {
   final String title;
   final String description;
-  final String link;
+  final List<int> users;
   final DateTime date;
 
   PostEvents({
     required this.title,
     required this.description,
-    required this.link,
     required this.date,
+    required this.users,
   });
 
   PostEvents.fromJson(Map<String, dynamic> mappedData)
       : title = mappedData['title'],
         description = mappedData['description'],
-        link = mappedData['link'],
+        users = mappedData['users'],
         date = DateTime.parse(mappedData['date']);
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'description': description,
+    'date': date.toString(),
+    'users': users
+  };
 }
 
 class PatchEvents {

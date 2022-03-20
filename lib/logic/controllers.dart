@@ -10,4 +10,6 @@ class Controllers{
   static TextEditingController profileEmailController = TextEditingController();
   static TextEditingController profileNameController = TextEditingController();
   static TextEditingController profilePhoneController = TextEditingController();
+  static TextEditingController newEventTitleController = TextEditingController();
+  static TextEditingController newEventDescriptionController = TextEditingController();
 }

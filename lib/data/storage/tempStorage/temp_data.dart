@@ -1,6 +1,5 @@
 import 'package:oggetto_calendar/data/models/events.dart';
 import 'package:oggetto_calendar/data/models/user.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class TempData {
   static String token = '';
@@ -20,4 +19,7 @@ class TempData {
   static List<GetEvents> curDayEvents = [];
   static List<GetEvents> curMonthEvents = [];
   static Map<DateTime, List<GetEvents>> selectedEvents={};
+  static List<int> usersAddEvent = [];
+  static String displayedDate = "Дата события";
+  static DateTime newEventDate = DateTime.now();
 }

@@ -68,25 +68,49 @@ class Functions {
     var res = await API.getDatedEvents(from, to);
     List<dynamic> events = jsonDecode(utf8.decode(res.bodyBytes));
     TempData.curMonthEvents.clear();
-    for(Map<String, dynamic>event in events)
-      {
-        TempData.curMonthEvents.add(GetEvents.fromJson(event));
-      }
+    for (Map<String, dynamic>event in events) {
+      TempData.curMonthEvents.add(GetEvents.fromJson(event));
+    }
     TempData.selectedEvents.clear();
-    for(var ev in TempData.curMonthEvents)
-      {
-        if(!TempData.selectedEvents.containsKey(ev.date))
-          {
-            TempData.selectedEvents[ev.date]=[];
-          }
-        TempData.selectedEvents[ev.date]!.add(ev);
+    for (var ev in TempData.curMonthEvents) {
+      if (!TempData.selectedEvents.containsKey(ev.date)) {
+        TempData.selectedEvents[ev.date] = [];
       }
+      TempData.selectedEvents[ev.date]!.add(ev);
+    }
     return "SUCCESS";
   }
 
   static Future<String> createEvent() async {
+    print(TempData.newEventDate);
+    var event = PostEvents(title: Controllers.newEventTitleController.text,
+        description: Controllers.newEventDescriptionController.text,
+        date: TempData.newEventDate,
+        users: TempData.usersAddEvent
+    );
+    var resp = await API.postEvents(jsonEncode(event.toJson()));
+    if (resp.statusCode > 299) {
+      return jsonDecode(resp.body)['detail'];
+    }
 
+    return "SUCCESS";
+  }
 
+  static Future<String> getUsers() async
+  {
+    var resp = await API.getUsers();
+    if (resp.statusCode > 299) {
+      return jsonDecode(resp.body)['detail'];
+    }
+    List<dynamic> data_s = jsonDecode(utf8.decode(resp.bodyBytes));
+    print(data_s);
+    List<GetUser> users = [];
+    for (Map<String, dynamic> data in data_s) {
+      users.add(GetUser.fromJson(data));
+    }
+
+    TempData.users = users;
+    print(TempData.users);
     return "SUCCESS";
   }
 }

@@ -19,6 +19,7 @@ class InitialPage extends StatelessWidget {
   Widget build(BuildContext context) {
     DeviceInfo.screenSize = MediaQuery.of(context).size;
     bool _logged = false;
+    //tryAuth();
     if (Controllers.loginController.text.isNotEmpty &&
         Controllers.passwordController.text.isNotEmpty) {
       Functions.login().then((value) => _logged = true);

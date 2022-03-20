@@ -9,6 +9,8 @@ class AppStrings{
   static const String noAccountText = "Все еще нет аккаунта?";
   static const String regAccountText = "Зарегистрироваться";
   static const String signIn = "Войти";
+  static const String eventTitle = "Название события";
+  static const String eventDescription = "Описание события";
 
   //api strings
   static const String apiUri = "https://oce.shitposting.team";
